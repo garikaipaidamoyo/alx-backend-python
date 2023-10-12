@@ -3,7 +3,7 @@
 
 import asyncio
 from typing import List
-from .0-basic_async_syntax import wait_random  # Import the wait_random function correctly
+from 0-basic_async_syntax import wait_random  # Import the wait_random function correctly
 
 
 async def wait_n(n: int, max_delay: int) -> List[float]:

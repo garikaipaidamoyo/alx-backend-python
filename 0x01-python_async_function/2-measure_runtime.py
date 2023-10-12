@@ -6,9 +6,7 @@ Function to measure runtime of wait_n
 import asyncio
 import time
 from typing import List
-
-# Import the wait_n function from your module
-from basic_async_syntax import wait_random
+from concurrent_coroutines import wait_n  # Import the wait_n function
 
 
 def measure_time(n: int, max_delay: int) -> float:
