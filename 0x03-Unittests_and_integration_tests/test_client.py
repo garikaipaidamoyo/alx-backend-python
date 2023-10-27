@@ -7,6 +7,39 @@ from client import GithubOrgClient
 from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 
+@parameterized_class(
+    ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),
+    [
+        (org_payload, repos_payload, expected_repos, apache2_repos),
+    ],
+)
+class TestIntegrationGithubOrgClientWithFixtures(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        # Mock the requests.get method to return org_payload
+        cls.org_patcher = patch('requests.get', return_value=cls.org_payload)
+        cls.org_patcher.start()
+
+        # Initialize the GithubOrgClient
+        cls.client = GithubOrgClient("test")
+
+    @classmethod
+    def tearDownClass(cls):
+        # Stop the patcher after all tests are finished
+        cls.org_patcher.stop()
+
+    def test_public_repos(self):
+        # Ensure public_repos returns the expected results based on fixtures
+        repos = self.client.public_repos()
+        self.assertEqual(repos, self.expected_repos)
+
+    def test_public_repos_with_license(self):
+        # Test public_repos with the argument license="apache-2.0"
+        repos = self.client.public_repos(license="apache-2.0")
+        self.assertEqual(repos, self.apache2_repos)
+
+
 class TestGithubOrgClient(unittest.TestCase):
 
     @parameterized.expand([
